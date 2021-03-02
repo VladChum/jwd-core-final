@@ -17,11 +17,19 @@ import java.util.Scanner;
 public class SpaceshipFetchStrategy implements FetchStrategy {
     private static final Logger logger = Logger.getLogger(SpaceshipFetchStrategy.class);
 
+    private static SpaceshipFetchStrategy instance;
+
+    public static SpaceshipFetchStrategy getInstance() {
+        if (instance == null) {
+            instance = new SpaceshipFetchStrategy();
+        }
+        return instance;
+    }
     @Override
     public void fetchFromFile(String pathName) throws InvalidStateException {
         logger.log(Level.INFO, "Load information about spaceship ...");
 
-        try (Scanner scanner = new Scanner(new File("src/main/resources/" + pathName))) {
+        try (Scanner scanner = new Scanner(new File("src/main/resources/input/" + pathName))) {
             int nameSpaceship = 0;
             int distanceSpaceship = 1;
             int crewSpaceship = 2;

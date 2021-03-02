@@ -1,5 +1,6 @@
 package com.epam.jwd.core_final.strategy.impl;
 
+import com.epam.jwd.core_final.domain.Rank;
 import com.epam.jwd.core_final.domain.Role;
 import com.epam.jwd.core_final.exception.InvalidStateException;
 import com.epam.jwd.core_final.factory.impl.CrewMemberFactory;
@@ -15,11 +16,20 @@ import java.util.Scanner;
 public class CrewMemberFetchStrategy implements FetchStrategy {
     private static final Logger logger = Logger.getLogger(CrewMemberFetchStrategy.class);
 
+    private static CrewMemberFetchStrategy instance;
+
+    public static CrewMemberFetchStrategy getInstance() {
+        if (instance == null) {
+            instance = new CrewMemberFetchStrategy();
+        }
+        return instance;
+    }
+
     @Override
     public void fetchFromFile(String pathName) throws InvalidStateException {
         logger.log(Level.INFO, "Load information about crew member ...");
 
-        try (Scanner scanner = new Scanner(new File("src/main/resources/" + pathName))) {
+        try (Scanner scanner = new Scanner(new File("src/main/resources/input/" + pathName))) {
             scanner.nextLine();
             scanner.useDelimiter(";");
             int nameCrewMember = 1;
@@ -32,7 +42,7 @@ public class CrewMemberFetchStrategy implements FetchStrategy {
                 FindCrewMemberService.getInstance().createCrewMember(CrewMemberFactory.getInstance()
                         .create(crewMemberAttributes[nameCrewMember],
                                 Role.resolveRoleById(Integer.parseInt(crewMemberAttributes[roleCrewMember])),
-                                Role.resolveRoleById(Integer.parseInt(crewMemberAttributes[rankCrewMember]))));
+                                Rank.resolveRankById(Integer.parseInt(crewMemberAttributes[rankCrewMember]))));
             }
         } catch (FileNotFoundException e) {
             logger.log(Level.ERROR, "File   \"" + pathName + "\" cant be found!!!!");
