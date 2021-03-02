@@ -2,6 +2,8 @@ package com.epam.jwd.core_final.domain;
 
 import com.epam.jwd.core_final.exception.UnknownEntityException;
 
+import java.util.Arrays;
+
 public enum Role implements BaseEntity {
     MISSION_SPECIALIST(1L),
     FLIGHT_ENGINEER(2L),
@@ -24,7 +26,7 @@ public enum Role implements BaseEntity {
      */
     @Override
     public String getName() {
-        return null;
+        return name();
     }
 
     /**
@@ -32,6 +34,10 @@ public enum Role implements BaseEntity {
      * @throws UnknownEntityException if such id does not exist
      */
     public static Role resolveRoleById(int id) {
-        return null;
+        return Arrays.stream(Role.values())
+                .filter(role -> role.id.equals((long) id))
+                .findFirst()
+                .orElseThrow(() -> new UnknownEntityException("Impossible to resolve rank by specified id"));
+
     }
 }

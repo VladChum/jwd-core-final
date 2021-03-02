@@ -8,7 +8,7 @@ import java.util.Map;
  * <p>
  * location location could be a simple class Point with 2 coordinates
  */
-public class Planet extends AbstractBaseEntity{
+public class Planet extends AbstractBaseEntity {
     public Point point;
 
     public Planet(String name, Point point) {
@@ -20,6 +20,7 @@ public class Planet extends AbstractBaseEntity{
         super(name);
         this.point = new Point(x, y);
     }
+
     @Override
     public Long getId() {
         return super.getId();
@@ -32,9 +33,9 @@ public class Planet extends AbstractBaseEntity{
 
     @Override
     public String toString() {
-        return "Planet{" +
-                "point=" + point +
-                '}';
+        return getId() + "\t" +
+                "(" + point.getX() + ", " + point.getY() + ")\t" +
+                getName();
     }
 
     public static class Point {
