@@ -1,10 +1,22 @@
 package com.epam.jwd.core_final.service.impl;
 
+import com.epam.jwd.core_final.context.impl.NassaContext;
+import com.epam.jwd.core_final.domain.CrewMember;
 import com.epam.jwd.core_final.domain.Planet;
+import com.epam.jwd.core_final.domain.Spaceship;
 import com.epam.jwd.core_final.service.SpacemapService;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 public class FindSpacemapService  implements SpacemapService {
     private static FindSpacemapService instance;
+
+    private final Collection<Planet> PLANET_CASH  =
+            NassaContext.getInstance().retrieveBaseEntityList(Planet.class);
+
 
     public static FindSpacemapService getInstance() {
         if (instance == null) {
@@ -15,7 +27,8 @@ public class FindSpacemapService  implements SpacemapService {
 
     @Override
     public Planet getRandomPlanet() {
-        return null;
+        Random random = new Random();
+        return (Planet) PLANET_CASH.toArray()[random.nextInt(PLANET_CASH.size())];
     }
 
     @Override
@@ -28,6 +41,17 @@ public class FindSpacemapService  implements SpacemapService {
 
     @Override
     public Planet createPlanet(Planet planet) throws RuntimeException {
-        return null;
+        boolean isDuplicate = PLANET_CASH.stream()
+                .noneMatch(planet1 -> planet1.getName().equals(planet.getName()));
+
+        if (isDuplicate) {
+            PLANET_CASH.add(planet);
+        }
+        return planet;
+    }
+
+    @Override
+    public List<Planet> findAllPlanet() {
+        return new ArrayList<>(PLANET_CASH);
     }
 }

@@ -6,6 +6,7 @@ import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.domain.CrewMember;
 import com.epam.jwd.core_final.service.CrewService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -25,11 +26,12 @@ public class FindCrewMemberService implements CrewService {
 
     @Override
     public List<CrewMember> findAllCrewMembers() {
-        return null;
+        return new ArrayList<>(CREW_MEMBER_CASH);
     }
 
     @Override
     public List<CrewMember> findAllCrewMembersByCriteria(Criteria<? extends CrewMember> criteria) {
+
         return null;
     }
 
@@ -45,7 +47,9 @@ public class FindCrewMemberService implements CrewService {
 
     @Override
     public void assignCrewMemberOnMission(CrewMember crewMember) throws RuntimeException {
-
+        if (crewMember.getReadyForNextMissions() == true) {
+            crewMember.crewMemberIsNotReadeForNextMissions();
+        }
     }
 
     @Override

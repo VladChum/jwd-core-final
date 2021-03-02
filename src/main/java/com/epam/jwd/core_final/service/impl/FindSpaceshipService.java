@@ -1,14 +1,21 @@
 package com.epam.jwd.core_final.service.impl;
 
+import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.Criteria;
+import com.epam.jwd.core_final.domain.CrewMember;
 import com.epam.jwd.core_final.domain.Spaceship;
 import com.epam.jwd.core_final.service.SpaceshipService;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 public class FindSpaceshipService implements SpaceshipService {
     private static FindSpaceshipService instance;
+
+    private final Collection<Spaceship> SPACESHIP_CASH  =
+            NassaContext.getInstance().retrieveBaseEntityList(Spaceship.class);
 
     public static FindSpaceshipService getInstance() {
         if (instance == null) {
@@ -19,7 +26,7 @@ public class FindSpaceshipService implements SpaceshipService {
 
     @Override
     public List<Spaceship> findAllSpaceships() {
-        return null;
+        return new ArrayList<>(SPACESHIP_CASH);
     }
 
     @Override
@@ -44,6 +51,12 @@ public class FindSpaceshipService implements SpaceshipService {
 
     @Override
     public Spaceship createSpaceship(Spaceship spaceship) throws RuntimeException {
-        return null;
+        boolean isDuplicate = SPACESHIP_CASH.stream()
+                .noneMatch(member -> member.getName().equals(spaceship.getName()));
+
+        if (isDuplicate) {
+        SPACESHIP_CASH.add(spaceship);
+        }
+        return spaceship;
     }
 }
