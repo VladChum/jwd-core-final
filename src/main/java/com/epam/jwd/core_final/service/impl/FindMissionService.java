@@ -2,18 +2,16 @@ package com.epam.jwd.core_final.service.impl;
 
 import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.Criteria;
+import com.epam.jwd.core_final.criteria.FlightMissionCriteria;
 import com.epam.jwd.core_final.domain.FlightMission;
 import com.epam.jwd.core_final.service.MissionService;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class FindMissionService implements MissionService {
-    private static final Logger logger = Logger.getLogger(FindMissionService.class);
 
     private static FindMissionService instance;
 
@@ -29,17 +27,44 @@ public class FindMissionService implements MissionService {
 
     @Override
     public List<FlightMission> findAllMissions() {
-        return new ArrayList<>(FLIGHT_MISSION_CASH);
+        return (List<FlightMission>) NassaContext.getInstance().retrieveBaseEntityList(FlightMission.class);
     }
 
     @Override
     public List<FlightMission> findAllMissionsByCriteria(Criteria<? extends FlightMission> criteria) {
-        return null;
+        if (criteria == null) {
+            return findAllMissions();
+        }
+
+        List<FlightMission> flightMissions = findAllMissions();
+        FlightMissionCriteria flightMissionCriteria = (FlightMissionCriteria) criteria;
+
+        return flightMissions.stream().filter(flightMission -> (
+                (flightMission.getName().equals(flightMissionCriteria.getName())
+                        || flightMissionCriteria.getName() == null)
+                        && (flightMissionCriteria.getDistance().equals(flightMission.getDistance())
+                        || flightMissionCriteria.getDistance() == null)
+                        && (flightMissionCriteria.getStartDate().equals(flightMission.getStartDate())
+                        || flightMissionCriteria.getStartDate() == null)
+        )).collect(Collectors.toList());
     }
 
     @Override
     public Optional<FlightMission> findMissionByCriteria(Criteria<? extends FlightMission> criteria) {
-        return Optional.empty();
+        List<FlightMission> missions = findAllMissions();
+        FlightMissionCriteria flightMissionCriteria = (FlightMissionCriteria) criteria;
+
+        return missions.stream().filter(mission -> (
+                        (flightMissionCriteria.getName() == null
+                                || mission.getName().equals(flightMissionCriteria.getName()))
+                                && (flightMissionCriteria.getDistance() == null
+                                || flightMissionCriteria.getDistance().equals(mission.getDistance()))
+                                && (flightMissionCriteria.getMissionResult() == null
+                                || flightMissionCriteria.getMissionResult().equals(mission.getMissionResult())
+                                && (flightMissionCriteria.getId() == null
+                                || flightMissionCriteria.getId().equals(mission.getId())))
+                )
+        ).findFirst();
     }
 
     @Override

@@ -2,14 +2,14 @@ package com.epam.jwd.core_final.service.impl;
 
 import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.Criteria;
-import com.epam.jwd.core_final.domain.CrewMember;
+import com.epam.jwd.core_final.criteria.SpaceshipCriteria;
 import com.epam.jwd.core_final.domain.Spaceship;
 import com.epam.jwd.core_final.service.SpaceshipService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class FindSpaceshipService implements SpaceshipService {
     private static FindSpaceshipService instance;
@@ -26,17 +26,42 @@ public class FindSpaceshipService implements SpaceshipService {
 
     @Override
     public List<Spaceship> findAllSpaceships() {
-        return new ArrayList<>(SPACESHIP_CASH);
+        return (List<Spaceship>) NassaContext.getInstance().retrieveBaseEntityList(Spaceship.class);
     }
 
     @Override
     public List<Spaceship> findAllSpaceshipsByCriteria(Criteria<? extends Spaceship> criteria) {
-        return null;
+        if (criteria == null) {
+            return findAllSpaceships();
+        }
+        List<Spaceship> spaceships = findAllSpaceships();
+        SpaceshipCriteria spaceshipCriteria = (SpaceshipCriteria) criteria;
+
+        return spaceships.stream().filter(spaceship -> (
+                (spaceship.getName().equals(spaceshipCriteria.getName()) || spaceshipCriteria.getName() == null)
+                        && (spaceship.getId() == spaceshipCriteria.getId()
+                        || spaceshipCriteria.getId() == null)
+                        && (spaceship.getReadyForNextMissions() == spaceshipCriteria.getReadyForNextMissions()
+                        || spaceshipCriteria.getReadyForNextMissions() == null)
+                        && (spaceship.getFlightDistance() == spaceshipCriteria.getFlightDistance()
+                        || spaceshipCriteria.getFlightDistance() == null)
+        )).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Spaceship> findSpaceshipByCriteria(Criteria<? extends Spaceship> criteria) {
-        return Optional.empty();
+        List<Spaceship> spaceships = findAllSpaceships();
+        SpaceshipCriteria spaceshipCriteria = (SpaceshipCriteria) criteria;
+
+        return spaceships.stream().filter(spaceship -> (
+                (spaceshipCriteria.getName() == null || spaceship.getName().equals(spaceshipCriteria.getName()))
+                        && (spaceshipCriteria.getFlightDistance() == null
+                        || spaceship.getFlightDistance() >= spaceshipCriteria.getFlightDistance())
+                        && (spaceshipCriteria.getReadyForNextMissions() == null
+                        || spaceship.getReadyForNextMissions() == spaceshipCriteria.getReadyForNextMissions())
+                        && (spaceshipCriteria.getId() == null
+                        || spaceship.getId() >= spaceshipCriteria.getId())
+        )).findFirst();
     }
 
     @Override
@@ -45,8 +70,8 @@ public class FindSpaceshipService implements SpaceshipService {
     }
 
     @Override
-    public void assignSpaceshipOnMission(Spaceship crewMember) throws RuntimeException {
-
+    public void assignSpaceshipOnMission(Spaceship spaceship) throws RuntimeException {
+        spaceship.setReadyForNextMissions(false);
     }
 
     @Override

@@ -1,12 +1,9 @@
 package com.epam.jwd.core_final.service.impl;
 
 import com.epam.jwd.core_final.context.impl.NassaContext;
-import com.epam.jwd.core_final.domain.CrewMember;
 import com.epam.jwd.core_final.domain.Planet;
-import com.epam.jwd.core_final.domain.Spaceship;
 import com.epam.jwd.core_final.service.SpacemapService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -52,6 +49,6 @@ public class FindSpacemapService  implements SpacemapService {
 
     @Override
     public List<Planet> findAllPlanet() {
-        return new ArrayList<>(PLANET_CASH);
+        return (List<Planet>) NassaContext.getInstance().retrieveBaseEntityList(Planet.class);
     }
 }

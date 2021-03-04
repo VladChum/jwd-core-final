@@ -30,24 +30,30 @@ public class FlightMission extends AbstractBaseEntity {
     private Planet to;
 
 
-    public FlightMission(String missionName, LocalDate startDate, LocalDate endDate, Planet from, Planet to) {
+    public FlightMission(String missionName, LocalDate startDate, LocalDate endDate,
+                         Planet from, Planet to, Spaceship spaceship,
+                         List<CrewMember> crewMembers,MissionResult missionResult) {
         super(missionName);
         this.startDate = startDate;
         this.endDate = endDate;
         this.from = from;
         this.to = to;
+        this.missionResult = missionResult;
+        this.assignedCrew = crewMembers;
+        this.spaceship = spaceship;
         this.distance = Long.valueOf(FindSpacemapService.getInstance().getDistanceBetweenPlanets(from, to));
     }
 
     @Override
     public String toString() {
-        return  getName() + "\t" +
+        return  getId() + "\t" +
+                getName() + "\t" +
                 startDate + "\t" +
                 endDate + "\t" +
                 distance + "\t" +
 //                assignedCrew + "\t" +
-//                spaceship + "\t" +
-//                missionResult + "\t" +
+                spaceship + "\t" +
+                missionResult + "\t" +
                 from + "\t" +
                 to;
     }

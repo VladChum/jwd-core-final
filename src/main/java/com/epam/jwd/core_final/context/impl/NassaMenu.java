@@ -61,7 +61,7 @@ public class NassaMenu implements ApplicationMenu {
         switch (option) {
             case 1:     //view mission
 //                мисии которые завершились
-                FindMissionService.getInstance().findAllMissions().forEach(System.out::println);
+                MenuMission.getInstance().getApplicationContext();
                 break;
             case 2:     //create mission
                 MenuCreatMission.getInstance().getApplicationContext();

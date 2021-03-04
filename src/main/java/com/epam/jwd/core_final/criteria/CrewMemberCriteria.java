@@ -19,6 +19,10 @@ public class CrewMemberCriteria extends Criteria<CrewMember> {
         isReadyForNextMissions = builder.isReadyForNextMissions;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public Role getRole() {
         return role;
     }
@@ -31,10 +35,14 @@ public class CrewMemberCriteria extends Criteria<CrewMember> {
         return isReadyForNextMissions;
     }
 
-    static class Builder extends Criteria.Builder {
+    public static class Builder extends Criteria.Builder<Builder> {
         private Role role;
         private Rank rank;
         private Boolean isReadyForNextMissions = true;
+
+        public Criteria<CrewMember> builder() {
+            return new CrewMemberCriteria(this);
+        }
 
         public Builder role(Role role) {
             this.role = role;

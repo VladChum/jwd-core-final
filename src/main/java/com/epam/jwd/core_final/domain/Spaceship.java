@@ -25,7 +25,7 @@ public class Spaceship extends AbstractBaseEntity {
     public String toString() {
         return getId() + "\t" +
                 crew + "\t" +
-                isReadyForNextMissions + "\t" +
+//                isReadyForNextMissions + "\t" +
                 flightDistance + "\t" +
                 getName();
     }

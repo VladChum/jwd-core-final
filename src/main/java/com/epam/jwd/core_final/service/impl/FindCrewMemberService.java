@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class FindCrewMemberService implements CrewService {
-    private final Collection<CrewMember> CREW_MEMBER_CASH  =
+    private final Collection<CrewMember> CREW_MEMBER_CASH =
             NassaContext.getInstance().retrieveBaseEntityList(CrewMember.class);
 
     private static FindCrewMemberService instance;
@@ -31,13 +32,37 @@ public class FindCrewMemberService implements CrewService {
 
     @Override
     public List<CrewMember> findAllCrewMembersByCriteria(Criteria<? extends CrewMember> criteria) {
+        if (criteria == null) {
+            return findAllCrewMembers();
+        }
+        List<CrewMember> crewMembers = findAllCrewMembers();
+        CrewMemberCriteria crewMemberCriteria = (CrewMemberCriteria) criteria;
 
-        return null;
+        return crewMembers.stream().filter(crewMember -> (
+                (crewMember.getName().equals(crewMemberCriteria.getName()) || crewMemberCriteria.getName() == null)
+                        && (crewMember.getRank() == crewMemberCriteria.getRank()
+                        || crewMemberCriteria.getRank() == null)
+                        && (crewMember.getReadyForNextMissions() == crewMemberCriteria.getReadyForNextMissions()
+                        || crewMemberCriteria.getReadyForNextMissions() == null)
+                        && (crewMember.getRole() == crewMemberCriteria.getRole()
+                        || crewMemberCriteria.getRole() == null)
+        )).collect(Collectors.toList());
     }
 
     @Override
     public Optional<CrewMember> findCrewMemberByCriteria(Criteria<? extends CrewMember> criteria) {
-        return Optional.empty();
+        List<CrewMember> crewMembers = findAllCrewMembers();
+        CrewMemberCriteria crewMemberCriteria = (CrewMemberCriteria) criteria;
+
+        return crewMembers.stream().filter(crewMember -> (
+                (crewMemberCriteria.getName() == null || crewMember.getName().equals(crewMemberCriteria.getName()))
+                        && (crewMemberCriteria.getRank() == null
+                        || crewMember.getRank() == crewMemberCriteria.getRank())
+                        && (crewMemberCriteria.getReadyForNextMissions() == null
+                        || crewMember.getReadyForNextMissions() == crewMemberCriteria.getReadyForNextMissions())
+                        && (crewMemberCriteria.getRole() == null
+                        || crewMember.getRole() == crewMemberCriteria.getRole())
+        )).findFirst();
     }
 
     @Override
@@ -47,7 +72,7 @@ public class FindCrewMemberService implements CrewService {
 
     @Override
     public void assignCrewMemberOnMission(CrewMember crewMember) throws RuntimeException {
-        if (crewMember.getReadyForNextMissions() == true) {
+        if (crewMember.getReadyForNextMissions().equals(true)) {
             crewMember.crewMemberIsNotReadeForNextMissions();
         }
     }
