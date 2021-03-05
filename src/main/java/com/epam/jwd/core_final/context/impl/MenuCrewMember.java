@@ -5,8 +5,10 @@ import com.epam.jwd.core_final.context.ApplicationMenu;
 import com.epam.jwd.core_final.criteria.CrewMemberCriteria;
 import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.domain.*;
+import com.epam.jwd.core_final.exception.InvalidStateException;
 import com.epam.jwd.core_final.factory.impl.CrewMemberFactory;
 import com.epam.jwd.core_final.service.impl.FindCrewMemberService;
+import com.epam.jwd.core_final.strategy.impl.CrewMemberWriteStrategy;
 import com.epam.jwd.core_final.strategy.impl.UserInputStrategy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -126,11 +128,15 @@ public class MenuCrewMember implements ApplicationMenu {
 
     private void createCrewMemberWithUserOptions() {
         logger.log(Level.INFO, "Start create crew member ...");
-        String name = UserInputStrategy.getInstance().inputName();
+        String name = UserInputStrategy.getInstance().inputNameForCreate();
         Role role = UserInputStrategy.getInstance().inputRole();
         Rank rank = UserInputStrategy.getInstance().inputRank();
 
-        FindCrewMemberService.getInstance().createCrewMember(CrewMemberFactory.getInstance().create(name, role, rank));
+        try {
+            CrewMemberWriteStrategy.getInstance().writeToFile(CrewMemberFactory.getInstance().create(name, role, rank));
+        } catch (InvalidStateException e) {
+            e.printStackTrace();
+        }
         System.out.println("Crew member was creat");
         logger.log(Level.INFO, "crew member creat !!!");
     }

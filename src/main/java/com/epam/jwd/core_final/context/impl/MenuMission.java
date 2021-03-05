@@ -7,6 +7,7 @@ import com.epam.jwd.core_final.criteria.FlightMissionCriteria;
 import com.epam.jwd.core_final.domain.FlightMission;
 import com.epam.jwd.core_final.domain.MissionResult;
 import com.epam.jwd.core_final.service.impl.FindMissionService;
+import com.epam.jwd.core_final.strategy.impl.FlightMissionWriteStrategy;
 import com.epam.jwd.core_final.strategy.impl.UserInputStrategy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -55,7 +56,8 @@ public class MenuMission implements ApplicationMenu {
                 "1) view all missions\n" +
                 "2) view all missions with options\n" +
                 "3) find mission with user options\n" +
-                "4) click to go back");
+                "4) write all mission in file\n" +
+                "5) click to go back");
     }
 
     @Override
@@ -71,7 +73,11 @@ public class MenuMission implements ApplicationMenu {
             case 3:                             //find mission with user options
                 printMissionWithUserOptions();
                 break;
-            case 4:                             //back
+            case 4:
+                FlightMissionWriteStrategy.getInstance().writeCash();
+                System.out.println("Flight missions write in file!");
+                break;
+            case 5:                             //back
                 logger.log(Level.INFO, "Return from NASSA menu !");
                 returnValue = 1;
                 break;

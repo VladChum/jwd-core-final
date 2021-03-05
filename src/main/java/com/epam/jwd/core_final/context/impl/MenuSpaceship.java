@@ -6,8 +6,10 @@ import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.criteria.SpaceshipCriteria;
 import com.epam.jwd.core_final.domain.Role;
 import com.epam.jwd.core_final.domain.Spaceship;
+import com.epam.jwd.core_final.exception.InvalidStateException;
 import com.epam.jwd.core_final.factory.impl.SpaceshipFactory;
 import com.epam.jwd.core_final.service.impl.FindSpaceshipService;
+import com.epam.jwd.core_final.strategy.impl.SpaceshipWriteStrategy;
 import com.epam.jwd.core_final.strategy.impl.UserInputStrategy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -128,12 +130,16 @@ public class MenuSpaceship implements ApplicationMenu {
 
     private void createSpaceship() {
         logger.log(Level.INFO, "Start create spaceship ...");
-        String name = UserInputStrategy.getInstance().inputName();
+        String name = UserInputStrategy.getInstance().inputNameForCreate();
         Long flightDistance = UserInputStrategy.getInstance().inputDistance();
         Map<Role, Short> crew = UserInputStrategy.getInstance().crewForSpaceship();
 
-        FindSpaceshipService.getInstance().createSpaceship(SpaceshipFactory
-                .getInstance().create(name, flightDistance, crew));
+        try {
+            SpaceshipWriteStrategy.getInstance().writeToFile(SpaceshipFactory
+                    .getInstance().create(name, flightDistance, crew));
+        } catch (InvalidStateException e) {
+            e.printStackTrace();
+        }
         System.out.println("Spaceship was creat");
         logger.log(Level.INFO, "Spaceship creat !!!");
     }

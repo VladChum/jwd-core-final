@@ -69,6 +69,7 @@ public class MenuCreatMission implements ApplicationMenu {
             scanner.next();
         }
         logger.log(Level.INFO, "Mission  creat !!!");
+        System.out.println("Mission creat!!!!");
         return null;
     }
 

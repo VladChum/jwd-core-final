@@ -29,7 +29,7 @@ public class SpaceshipFetchStrategy implements FetchStrategy {
     public void fetchFromFile(String pathName) throws InvalidStateException {
         logger.log(Level.INFO, "Load information about spaceship ...");
 
-        try (Scanner scanner = new Scanner(new File("src/main/resources/input/" + pathName))) {
+        try (Scanner scanner = new Scanner(new File(pathName))) {
             int nameSpaceship = 0;
             int distanceSpaceship = 1;
             int crewSpaceship = 2;
@@ -40,11 +40,12 @@ public class SpaceshipFetchStrategy implements FetchStrategy {
                     continue;
                 }
                 String[] spaceshipAttributes = spaceship.split(";");
-
-                FindSpaceshipService.getInstance().createSpaceship(SpaceshipFactory.getInstance().
-                        create(spaceshipAttributes[nameSpaceship],
-                        Long.valueOf(spaceshipAttributes[distanceSpaceship]),
-                        crewMap(spaceshipAttributes[crewSpaceship])));
+                if (FindSpaceshipService.getInstance().checkDuplicateSpaceship(spaceshipAttributes[nameSpaceship])) {
+                    FindSpaceshipService.getInstance().createSpaceship(SpaceshipFactory.getInstance().
+                            create(spaceshipAttributes[nameSpaceship],
+                                    Long.valueOf(spaceshipAttributes[distanceSpaceship]),
+                                    crewMap(spaceshipAttributes[crewSpaceship])));
+                }
             }
         } catch (FileNotFoundException e) {
             logger.log(Level.ERROR, "File   \"" + pathName + "\" cant be found!!!!");

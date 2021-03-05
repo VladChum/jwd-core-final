@@ -55,13 +55,12 @@ public class NassaContext implements ApplicationContext {
         //throw new InvalidStateException();
         PropertyReaderUtil.loadProperties();
         String crewMemberPathName = PropertyReaderUtil.applicationProperties.getCrewFileName();
-        CrewMemberFetchStrategy.getInstance().fetchFromFile(crewMemberPathName);
+        CrewMemberFetchStrategy.getInstance().fetchFromFile("input/" + crewMemberPathName);
 
         String spaceshipsPathName = PropertyReaderUtil.applicationProperties.getSpaceshipsFileName();
-        SpaceshipFetchStrategy.getInstance().fetchFromFile(spaceshipsPathName);
+        SpaceshipFetchStrategy.getInstance().fetchFromFile("input/" + spaceshipsPathName);
 
-        //String planetMapPathName = PropertyReaderUtil.applicationProperties.getPlanetFileName();
         String planetMapPathName = "spacemap";
-        PlanetFetchStrategy.getInstance().fetchFromFile(planetMapPathName);
+        PlanetFetchStrategy.getInstance().fetchFromFile("input/" + planetMapPathName);
     }
 }

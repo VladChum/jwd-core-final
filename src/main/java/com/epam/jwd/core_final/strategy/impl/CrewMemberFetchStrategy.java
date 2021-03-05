@@ -29,7 +29,7 @@ public class CrewMemberFetchStrategy implements FetchStrategy {
     public void fetchFromFile(String pathName) throws InvalidStateException {
         logger.log(Level.INFO, "Load information about crew member ...");
 
-        try (Scanner scanner = new Scanner(new File("src/main/resources/input/" + pathName))) {
+        try (Scanner scanner = new Scanner(new File(pathName))) {
             scanner.nextLine();
             scanner.useDelimiter(";");
             int nameCrewMember = 1;
@@ -39,10 +39,13 @@ public class CrewMemberFetchStrategy implements FetchStrategy {
             while (scanner.hasNext()) {
                 String crewMember = scanner.next();
                 String[] crewMemberAttributes = crewMember.split(",");
-                FindCrewMemberService.getInstance().createCrewMember(CrewMemberFactory.getInstance()
-                        .create(crewMemberAttributes[nameCrewMember],
-                                Role.resolveRoleById(Integer.parseInt(crewMemberAttributes[roleCrewMember])),
-                                Rank.resolveRankById(Integer.parseInt(crewMemberAttributes[rankCrewMember]))));
+                if (FindCrewMemberService.getInstance()
+                        .checkDuplicateCrewMember(crewMemberAttributes[nameCrewMember])) {
+                    FindCrewMemberService.getInstance().createCrewMember(CrewMemberFactory.getInstance()
+                            .create(crewMemberAttributes[nameCrewMember],
+                                    Role.resolveRoleById(Integer.parseInt(crewMemberAttributes[roleCrewMember])),
+                                    Rank.resolveRankById(Integer.parseInt(crewMemberAttributes[rankCrewMember]))));
+                }
             }
         } catch (FileNotFoundException e) {
             logger.log(Level.ERROR, "File   \"" + pathName + "\" cant be found!!!!");

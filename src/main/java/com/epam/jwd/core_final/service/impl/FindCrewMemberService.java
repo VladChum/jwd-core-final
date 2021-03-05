@@ -4,9 +4,7 @@ import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.CrewMemberCriteria;
 import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.domain.CrewMember;
-import com.epam.jwd.core_final.exception.InvalidStateException;
 import com.epam.jwd.core_final.service.CrewService;
-import com.epam.jwd.core_final.strategy.impl.CrewMemberWriteStrategy;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,6 +67,7 @@ public class FindCrewMemberService implements CrewService {
 
     @Override
     public CrewMember updateCrewMemberDetails(CrewMember crewMember) {
+
         return null;
     }
 
@@ -81,18 +80,19 @@ public class FindCrewMemberService implements CrewService {
 
     @Override
     public CrewMember createCrewMember(CrewMember crewMember) throws RuntimeException {
-        boolean isDuplicate = CREW_MEMBER_CASH.stream()
-                .noneMatch(member -> member.getName().equals(crewMember.getName()));
-        // add duplicate check
+//        boolean isDuplicate = CREW_MEMBER_CASH.stream()
+//                .noneMatch(member -> member.getName().equals(crewMember.getName()));
+//         add duplicate check
+        boolean isDuplicate = checkDuplicateCrewMember(crewMember.getName());
 
         if (isDuplicate) {
             CREW_MEMBER_CASH.add(crewMember);
-            try {
-                CrewMemberWriteStrategy.getInstance().writeToFile(crewMember);
-            } catch (InvalidStateException e) {
-                e.printStackTrace();
-            }
         }
         return crewMember;
+    }
+
+    public boolean checkDuplicateCrewMember(String name) {
+        return CREW_MEMBER_CASH.stream()
+                .noneMatch(member -> member.getName().equals(name));
     }
 }

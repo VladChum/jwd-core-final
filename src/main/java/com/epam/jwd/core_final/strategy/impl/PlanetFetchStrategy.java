@@ -27,7 +27,7 @@ public class PlanetFetchStrategy implements FetchStrategy {
         logger.log(Level.INFO, "Load information about Planets ...");
         int yPlanetCoordinate = 0;
 
-        try (Scanner scanner = new Scanner(new File("src/main/resources/input/" + pathName))) {
+        try (Scanner scanner = new Scanner(new File(pathName))) {
             while (scanner.hasNext()) {
                 yPlanetCoordinate++;
                 String spaceMap = scanner.nextLine();

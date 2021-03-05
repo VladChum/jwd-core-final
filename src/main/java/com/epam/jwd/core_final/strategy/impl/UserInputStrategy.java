@@ -55,6 +55,11 @@ public class UserInputStrategy implements InputStrategy {
         return name;
     }
 
+    public String inputNameForCreate() {
+        System.out.println("Enter  name ...");
+        return scanner.next();
+    }
+
     @Override
     public Long inputID() {
         System.out.println("add  ID options [y/n] ...");

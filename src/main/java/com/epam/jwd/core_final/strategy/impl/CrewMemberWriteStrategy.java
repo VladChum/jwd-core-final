@@ -2,6 +2,8 @@ package com.epam.jwd.core_final.strategy.impl;
 
 import com.epam.jwd.core_final.domain.CrewMember;
 import com.epam.jwd.core_final.exception.InvalidStateException;
+import com.epam.jwd.core_final.service.impl.FindCrewMemberService;
+import com.epam.jwd.core_final.service.impl.FindSpaceshipService;
 import com.epam.jwd.core_final.strategy.WriteStrategy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -11,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class CrewMemberWriteStrategy implements WriteStrategy {
+public class CrewMemberWriteStrategy implements WriteStrategy<CrewMember> {
     private static final Logger logger = Logger.getLogger(CrewMemberWriteStrategy.class);
 
     private static CrewMemberWriteStrategy instance;
@@ -43,7 +45,7 @@ public class CrewMemberWriteStrategy implements WriteStrategy {
 
     @Override
     public void writeToFile(CrewMember crewMember) throws InvalidStateException {
-        logger.log(Level.INFO, "write information about crew member ...");
+//        logger.log(Level.INFO, "write information about crew member ...");
 
         writeCrewMember.write(crewMember.getRole().getId() + ","
                 + crewMember.getName() + ","
@@ -56,4 +58,13 @@ public class CrewMemberWriteStrategy implements WriteStrategy {
         writeCrewMember.close();
     }
 
+    public void writeCash() {
+        for (int i = 0; i < FindCrewMemberService.getInstance().findAllCrewMembers().size(); i++) {
+            try {
+                writeToFile(FindCrewMemberService.getInstance().findAllCrewMembers().get(i));
+            } catch (InvalidStateException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

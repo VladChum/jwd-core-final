@@ -4,9 +4,7 @@ import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.criteria.SpaceshipCriteria;
 import com.epam.jwd.core_final.domain.Spaceship;
-import com.epam.jwd.core_final.exception.InvalidStateException;
 import com.epam.jwd.core_final.service.SpaceshipService;
-import com.epam.jwd.core_final.strategy.impl.SpaceshipWriteStrategy;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.stream.Collectors;
 public class FindSpaceshipService implements SpaceshipService {
     private static FindSpaceshipService instance;
 
-    private final Collection<Spaceship> SPACESHIP_CASH  =
+    private final Collection<Spaceship> SPACESHIP_CASH =
             NassaContext.getInstance().retrieveBaseEntityList(Spaceship.class);
 
     public static FindSpaceshipService getInstance() {
@@ -78,17 +76,16 @@ public class FindSpaceshipService implements SpaceshipService {
 
     @Override
     public Spaceship createSpaceship(Spaceship spaceship) throws RuntimeException {
-        boolean isDuplicate = SPACESHIP_CASH.stream()
-                .noneMatch(member -> member.getName().equals(spaceship.getName()));
+        boolean isDuplicate = checkDuplicateSpaceship(spaceship.getName());
 
         if (isDuplicate) {
-        SPACESHIP_CASH.add(spaceship);
-            try {
-                SpaceshipWriteStrategy.getInstance().writeToFile(spaceship);
-            } catch (InvalidStateException e) {
-                e.printStackTrace();
-            }
+            SPACESHIP_CASH.add(spaceship);
         }
         return spaceship;
+    }
+
+    public boolean checkDuplicateSpaceship(String name) {
+        return SPACESHIP_CASH.stream()
+                .noneMatch(member -> member.getName().equals(name));
     }
 }
