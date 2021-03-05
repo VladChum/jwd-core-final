@@ -1,16 +1,21 @@
 package com.epam.jwd.core_final.strategy.impl;
 
+import com.epam.jwd.core_final.domain.FlightMission;
 import com.epam.jwd.core_final.domain.MissionResult;
 import com.epam.jwd.core_final.domain.Rank;
 import com.epam.jwd.core_final.domain.Role;
+import com.epam.jwd.core_final.service.impl.FindMissionService;
 import com.epam.jwd.core_final.strategy.InputStrategy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class UserInputStrategy implements InputStrategy {
     private static final Logger logger = Logger.getLogger(UserInputStrategy.class);
@@ -168,5 +173,16 @@ public class UserInputStrategy implements InputStrategy {
         System.out.println("Enter number COMMANDER : ");
         crew.put(Role.COMMANDER, Short.valueOf(scanner.next()));
         return crew;
+    }
+
+    public void progressFlightMission(FlightMission flightMission) {
+        if (flightMission.getMissionResult().equals(MissionResult.IN_PROGRESS)) {
+            double distanceBetweenDate = DAYS.between(flightMission.getStartDate(), flightMission.getEndDate());
+            System.out.println("Mission duration : " + distanceBetweenDate + "  days");
+            double distanceBetweenStartDateAndNowTime = DAYS.between(flightMission.getStartDate(), LocalDate.now());
+            System.out.println("On the way :  " + distanceBetweenStartDateAndNowTime + "  days");
+            double progress = distanceBetweenStartDateAndNowTime / distanceBetweenDate * 100;
+            System.out.println("Progress  : " + progress + "%");
+        }
     }
 }

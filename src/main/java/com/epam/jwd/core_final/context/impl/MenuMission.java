@@ -32,7 +32,7 @@ public class MenuMission implements ApplicationMenu {
     public ApplicationContext getApplicationContext() {
         logger.log(Level.INFO, "Start view missions  ...");
 
-        int quantityOptionsMenu = 4;
+        int quantityOptionsMenu = 5;
         int option = 0;
         while (option != quantityOptionsMenu) {
             printAvailableOptions();
@@ -105,6 +105,8 @@ public class MenuMission implements ApplicationMenu {
                 .findMissionByCriteria(flightMissionCriteria).isPresent()) {
             System.out.println(FindMissionService.getInstance()
                     .findMissionByCriteria(flightMissionCriteria).toString());
+            UserInputStrategy.getInstance().progressFlightMission(FindMissionService.getInstance()
+                    .findMissionByCriteria(flightMissionCriteria).get());
         } else {
             System.out.println("Mission were not found with this criteria");
         }

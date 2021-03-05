@@ -7,7 +7,6 @@ import com.epam.jwd.core_final.factory.impl.FlightMissionFactory;
 import com.epam.jwd.core_final.service.impl.FindMissionService;
 import com.epam.jwd.core_final.service.impl.FindSpacemapService;
 import com.epam.jwd.core_final.strategy.impl.MissionCreatStrategy;
-import com.epam.jwd.core_final.util.PropertyReaderUtil;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -37,11 +36,10 @@ public class MenuCreatMission implements ApplicationMenu {
             System.out.print(("Mission name: "));
             String missionName = scanner.nextLine();
 
-            System.out.print("Start date [YYYY-MM-dd](2001-03-03: ");
+            System.out.print("Start date [YYYY-MM-dd](example 2001-03-03): ");
             LocalDate startDate = LocalDate.parse(scanner.next());
-            System.out.print("End date [YYYY-MM-dd](2001-03-03): ");
+            System.out.print("End date [YYYY-MM-dd](example 2001-03-03): ");
             LocalDate endDate = LocalDate.parse(scanner.next());
-
             MissionResult missionStatus = MissionCreatStrategy.getInstance().missionStatus(startDate, endDate);
             Spaceship spaceship = MissionCreatStrategy.getInstance().addSpaceship(missionStatus);
 

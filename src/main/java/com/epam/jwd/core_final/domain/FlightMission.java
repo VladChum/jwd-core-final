@@ -29,10 +29,9 @@ public class FlightMission extends AbstractBaseEntity {
     private Planet from;
     private Planet to;
 
-
     public FlightMission(String missionName, LocalDate startDate, LocalDate endDate,
                          Planet from, Planet to, Spaceship spaceship,
-                         List<CrewMember> crewMembers,MissionResult missionResult) {
+                         List<CrewMember> crewMembers, MissionResult missionResult) {
         super(missionName);
         this.startDate = startDate;
         this.endDate = endDate;
@@ -92,6 +91,10 @@ public class FlightMission extends AbstractBaseEntity {
 
     public void setFrom(Planet from) {
         this.from = from;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     public Planet getTo() {
