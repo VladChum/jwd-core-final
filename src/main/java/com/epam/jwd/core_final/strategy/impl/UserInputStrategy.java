@@ -7,7 +7,9 @@ import com.epam.jwd.core_final.strategy.InputStrategy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserInputStrategy implements InputStrategy {
@@ -69,7 +71,7 @@ public class UserInputStrategy implements InputStrategy {
         System.out.println("Enter Distance : ");
         Long distance = null;
         try {
-            distance =  Long.valueOf(scanner.nextLong());
+            distance =  Long.valueOf(scanner.next());
         } catch (InputMismatchException e) {
             logger.log(Level.ERROR, "Incorrect input");
             System.out.println("Incorrect input!!!! pleas repeat..");
@@ -143,5 +145,18 @@ public class UserInputStrategy implements InputStrategy {
             }
         }
         return Role.resolveRoleById(role);
+    }
+
+    public Map<Role, Short> crewForSpaceship() {
+        Map<Role, Short> crew = new HashMap<>();
+        System.out.println("Enter number MISSION_SPECIALIST : ");
+        crew.put(Role.MISSION_SPECIALIST, Short.valueOf(scanner.next()));
+        System.out.println("Enter number FLIGHT_ENGINEER : ");
+        crew.put(Role.FLIGHT_ENGINEER, Short.valueOf(scanner.next()));
+        System.out.println("Enter number Pilot : ");
+        crew.put(Role.PILOT, Short.valueOf(scanner.next()));
+        System.out.println("Enter number COMMANDER : ");
+        crew.put(Role.COMMANDER, Short.valueOf(scanner.next()));
+        return crew;
     }
 }

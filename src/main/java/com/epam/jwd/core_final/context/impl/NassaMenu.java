@@ -2,13 +2,10 @@ package com.epam.jwd.core_final.context.impl;
 
 import com.epam.jwd.core_final.context.ApplicationContext;
 import com.epam.jwd.core_final.context.ApplicationMenu;
-import com.epam.jwd.core_final.factory.impl.FlightMissionFactory;
-import com.epam.jwd.core_final.service.impl.FindMissionService;
 import com.epam.jwd.core_final.service.impl.FindSpacemapService;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -27,6 +24,7 @@ public class NassaMenu implements ApplicationMenu {
     @Override
     public ApplicationContext getApplicationContext() {
         logger.log(Level.INFO, "Start Nassa program  ...");
+
         Scanner scanner = new Scanner(System.in);
         int quantityOptionsMenu = 6;
         int option = 0;
@@ -60,7 +58,6 @@ public class NassaMenu implements ApplicationMenu {
     public int handleUserInput(int option) {
         switch (option) {
             case 1:     //view mission
-//                мисии которые завершились
                 MenuMission.getInstance().getApplicationContext();
                 break;
             case 2:     //create mission

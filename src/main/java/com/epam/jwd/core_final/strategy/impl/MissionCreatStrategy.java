@@ -1,12 +1,11 @@
 package com.epam.jwd.core_final.strategy.impl;
 
 import com.epam.jwd.core_final.criteria.Criteria;
+import com.epam.jwd.core_final.criteria.PlanetCriteria;
 import com.epam.jwd.core_final.criteria.SpaceshipCriteria;
-import com.epam.jwd.core_final.domain.CrewMember;
-import com.epam.jwd.core_final.domain.MissionResult;
-import com.epam.jwd.core_final.domain.Role;
-import com.epam.jwd.core_final.domain.Spaceship;
+import com.epam.jwd.core_final.domain.*;
 import com.epam.jwd.core_final.service.impl.FindCrewMemberService;
+import com.epam.jwd.core_final.service.impl.FindSpacemapService;
 import com.epam.jwd.core_final.service.impl.FindSpaceshipService;
 import com.epam.jwd.core_final.strategy.CreatStrategy;
 import org.apache.log4j.Level;
@@ -84,7 +83,8 @@ public class MissionCreatStrategy implements CreatStrategy {
                     if (missionResult != MissionResult.COMPLETED) {
                         FindSpaceshipService.getInstance().assignSpaceshipOnMission(FindSpaceshipService.getInstance()
                                 .findAllSpaceshipsByCriteria(spaceshipCriteria).get(0));
-                    };
+                    }
+                    ;
                 }
             }
         }
@@ -179,4 +179,34 @@ public class MissionCreatStrategy implements CreatStrategy {
         logger.log(Level.INFO, crewMembers);
         return crewMembers;
     }
+
+    public Planet addPlanetForMission(Planet firstPlanet) {
+        List<Long> cashIdPlanetForThisMission = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        FindSpacemapService.getInstance().findAllPlanet().forEach(System.out::println);
+        for (int i = 0; i < FindSpacemapService.getInstance().findAllPlanet().size(); i++) {
+            cashIdPlanetForThisMission.add(FindSpacemapService.getInstance().findAllPlanet().get(i).getId());
+        }
+
+        Planet returnPlanet = null;
+        Long numberID;
+        if (cashIdPlanetForThisMission.size() != 0) {
+            while (true) {
+                System.out.println("Please enter number of Planet id: ");
+                numberID = Long.valueOf(scanner.next());
+                if (!numberID.equals(firstPlanet.getId()) && cashIdPlanetForThisMission.contains(numberID)) {
+                    for (int i = 0; i < FindSpacemapService.getInstance().findAllPlanet().size(); i++) {
+                        if (numberID.equals(FindSpacemapService.getInstance().findAllPlanet().get(i).getId())) {
+                            returnPlanet = FindSpacemapService.getInstance().findAllPlanet().get(i);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        logger.log(Level.INFO, returnPlanet);
+        return returnPlanet;
+    }
+
 }

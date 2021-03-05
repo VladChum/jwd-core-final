@@ -4,7 +4,9 @@ import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.criteria.SpaceshipCriteria;
 import com.epam.jwd.core_final.domain.Spaceship;
+import com.epam.jwd.core_final.exception.InvalidStateException;
 import com.epam.jwd.core_final.service.SpaceshipService;
+import com.epam.jwd.core_final.strategy.impl.SpaceshipWriteStrategy;
 
 import java.util.Collection;
 import java.util.List;
@@ -81,6 +83,11 @@ public class FindSpaceshipService implements SpaceshipService {
 
         if (isDuplicate) {
         SPACESHIP_CASH.add(spaceship);
+            try {
+                SpaceshipWriteStrategy.getInstance().writeToFile(spaceship);
+            } catch (InvalidStateException e) {
+                e.printStackTrace();
+            }
         }
         return spaceship;
     }

@@ -33,7 +33,6 @@ public class MenuMission implements ApplicationMenu {
 
         int quantityOptionsMenu = 4;
         int option = 0;
-
         while (option != quantityOptionsMenu) {
             printAvailableOptions();
             try {

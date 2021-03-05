@@ -7,6 +7,7 @@ import com.epam.jwd.core_final.service.SpacemapService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class FindSpacemapService  implements SpacemapService {
     private static FindSpacemapService instance;

@@ -4,13 +4,16 @@ import com.epam.jwd.core_final.context.ApplicationContext;
 import com.epam.jwd.core_final.context.ApplicationMenu;
 import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.criteria.SpaceshipCriteria;
+import com.epam.jwd.core_final.domain.Role;
 import com.epam.jwd.core_final.domain.Spaceship;
+import com.epam.jwd.core_final.factory.impl.SpaceshipFactory;
 import com.epam.jwd.core_final.service.impl.FindSpaceshipService;
 import com.epam.jwd.core_final.strategy.impl.UserInputStrategy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MenuSpaceship implements ApplicationMenu {
@@ -52,7 +55,8 @@ public class MenuSpaceship implements ApplicationMenu {
                 "1) find all spaceships\n" +
                 "2) find all spaceships with options\n" +
                 "3) find spaceship with user option\n" +
-                "4) click to go back");
+                "4) create spaceship\n" +
+                "5) click to go back");
     }
 
     @Override
@@ -68,7 +72,10 @@ public class MenuSpaceship implements ApplicationMenu {
             case 3:                             // find spaceship with user options
                 printSpaceshipWithUserOptions();
                 break;
-            case 4:                             //back
+            case 4:
+                createSpaceship();
+                break;
+            case 5:                             //back
                 logger.log(Level.INFO, "Return from NASSA menu !");
                 returnValue = 1;
                 break;
@@ -117,5 +124,17 @@ public class MenuSpaceship implements ApplicationMenu {
         FindSpaceshipService.getInstance().findAllSpaceshipsByCriteria(spaceshipCriteria)
                 .forEach(System.out::println);
         logger.log(Level.INFO, "Find all spaceships with options !");
+    }
+
+    private void createSpaceship() {
+        logger.log(Level.INFO, "Start create spaceship ...");
+        String name = UserInputStrategy.getInstance().inputName();
+        Long flightDistance = UserInputStrategy.getInstance().inputDistance();
+        Map<Role, Short> crew = UserInputStrategy.getInstance().crewForSpaceship();
+
+        FindSpaceshipService.getInstance().createSpaceship(SpaceshipFactory
+                .getInstance().create(name, flightDistance, crew));
+        System.out.println("Spaceship was creat");
+        logger.log(Level.INFO, "Spaceship creat !!!");
     }
 }

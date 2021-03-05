@@ -62,18 +62,6 @@ public class FlightMission extends AbstractBaseEntity {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public Long getDistance() {
         return distance;
     }

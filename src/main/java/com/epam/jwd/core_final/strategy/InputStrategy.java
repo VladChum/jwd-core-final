@@ -10,5 +10,6 @@ public interface InputStrategy {
     Long inputID();
 
     Long inputDistance();
+
     Boolean inputReadyForNextMissions();
 }
