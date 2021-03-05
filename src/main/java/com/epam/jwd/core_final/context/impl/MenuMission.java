@@ -6,6 +6,7 @@ import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.criteria.FlightMissionCriteria;
 import com.epam.jwd.core_final.domain.FlightMission;
 import com.epam.jwd.core_final.domain.MissionResult;
+import com.epam.jwd.core_final.service.impl.FindCrewMemberService;
 import com.epam.jwd.core_final.service.impl.FindMissionService;
 import com.epam.jwd.core_final.strategy.impl.FlightMissionWriteStrategy;
 import com.epam.jwd.core_final.strategy.impl.UserInputStrategy;
@@ -105,8 +106,13 @@ public class MenuMission implements ApplicationMenu {
                 .findMissionByCriteria(flightMissionCriteria).isPresent()) {
             System.out.println(FindMissionService.getInstance()
                     .findMissionByCriteria(flightMissionCriteria).toString());
-            UserInputStrategy.getInstance().progressFlightMission(FindMissionService.getInstance()
-                    .findMissionByCriteria(flightMissionCriteria).get());
+                UserInputStrategy.getInstance().progressFlightMission(FindMissionService.getInstance()
+                        .findMissionByCriteria(flightMissionCriteria).get());
+                System.out.println("Update this crew member? [y/n] ...");
+                if (scanner.next().equals("y")) {
+                    FindMissionService.getInstance().updateSpaceshipDetails(FindMissionService.getInstance()
+                            .findMissionByCriteria(flightMissionCriteria).get());
+            }
         } else {
             System.out.println("Mission were not found with this criteria");
         }

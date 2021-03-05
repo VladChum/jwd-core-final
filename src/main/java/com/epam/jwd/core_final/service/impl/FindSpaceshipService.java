@@ -67,8 +67,9 @@ public class FindSpaceshipService implements SpaceshipService {
 
     @Override
     public Spaceship updateSpaceshipDetails(Spaceship spaceship) {
-        if (spaceship.getReadyForNextMissions()) {
-            spaceship.setReadyForNextMissions(false);
+        if (spaceship.getReadyForNextMissions().equals(Boolean.FALSE)) {
+            spaceship.setReadyForNextMissions(Boolean.TRUE);
+            System.out.println("Spaceship update!");
         }
         return spaceship;
     }

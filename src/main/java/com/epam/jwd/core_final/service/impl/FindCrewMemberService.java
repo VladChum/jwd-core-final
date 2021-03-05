@@ -69,8 +69,9 @@ public class FindCrewMemberService implements CrewService {
 
     @Override
     public CrewMember updateCrewMemberDetails(CrewMember crewMember) {
-        if (crewMember.getReadyForNextMissions()) {
-            crewMember.setReadyForNextMissions(Boolean.FALSE);
+        if (crewMember.getReadyForNextMissions().equals(Boolean.FALSE)) {
+            crewMember.setReadyForNextMissions(Boolean.TRUE);
+            System.out.println("Crew member update!");
         }
         return crewMember;
     }

@@ -107,6 +107,11 @@ public class MenuCrewMember implements ApplicationMenu {
                 .findCrewMemberByCriteria(crewMembersCriteria).isPresent()) {
             System.out.println(FindCrewMemberService.getInstance()
                     .findCrewMemberByCriteria(crewMembersCriteria).toString());
+            System.out.println("Update this crew member? [y/n] ...");
+            if (scanner.next().equals("y")) {
+                FindCrewMemberService.getInstance().updateCrewMemberDetails(FindCrewMemberService.getInstance()
+                        .findCrewMemberByCriteria(crewMembersCriteria).get());
+            }
         } else {
             System.out.println("Crew member were not found with this criteria");
         }

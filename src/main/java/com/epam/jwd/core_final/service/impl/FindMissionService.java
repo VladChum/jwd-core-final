@@ -72,7 +72,9 @@ public class FindMissionService implements MissionService {
     @Override
     public FlightMission updateSpaceshipDetails(FlightMission flightMission) {
         if (flightMission.getMissionResult().equals(MissionResult.FAILED)) {
-            flightMission.getSpaceship().setReadyForNextMissions(false);
+            flightMission.getSpaceship().setReadyForNextMissions(Boolean.TRUE);
+            flightMission.setMissionResult(MissionResult.CANCELLED);
+            System.out.println("Mission status update!");
         }
         return flightMission;
     }

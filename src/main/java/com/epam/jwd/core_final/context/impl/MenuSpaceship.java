@@ -109,6 +109,11 @@ public class MenuSpaceship implements ApplicationMenu {
                 .findSpaceshipByCriteria(spaceshipCriteria).isPresent()) {
             System.out.println(FindSpaceshipService.getInstance()
                     .findSpaceshipByCriteria(spaceshipCriteria).toString());
+            System.out.println("Update this spaceship? [y/n] ...");
+            if (scanner.next().equals("y")) {
+                FindSpaceshipService.getInstance().updateSpaceshipDetails(FindSpaceshipService.getInstance()
+                        .findSpaceshipByCriteria(spaceshipCriteria).get());
+            }
         } else {
             System.out.println("Spaceship were not found with this criteria");
         }
