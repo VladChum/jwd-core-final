@@ -66,16 +66,8 @@ public class FlightMission extends AbstractBaseEntity {
         return distance;
     }
 
-    public void setDistance(Long distance) {
-        this.distance = distance;
-    }
-
     public List<CrewMember> getAssignedCrew() {
         return assignedCrew;
-    }
-
-    public void setAssignedCrew(List<CrewMember> assignedCrew) {
-        this.assignedCrew = assignedCrew;
     }
 
     public Spaceship getSpaceship() {

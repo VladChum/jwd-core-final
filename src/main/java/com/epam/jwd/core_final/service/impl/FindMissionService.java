@@ -4,6 +4,8 @@ import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.criteria.FlightMissionCriteria;
 import com.epam.jwd.core_final.domain.FlightMission;
+import com.epam.jwd.core_final.domain.MissionResult;
+import com.epam.jwd.core_final.exception.DuplicateException;
 import com.epam.jwd.core_final.service.MissionService;
 
 import java.util.Collection;
@@ -69,11 +71,14 @@ public class FindMissionService implements MissionService {
 
     @Override
     public FlightMission updateSpaceshipDetails(FlightMission flightMission) {
-        return null;
+        if (flightMission.getMissionResult().equals(MissionResult.FAILED)) {
+            flightMission.getSpaceship().setReadyForNextMissions(false);
+        }
+        return flightMission;
     }
 
     @Override
-    public FlightMission createMission(FlightMission flightMission) {
+    public FlightMission createMission(FlightMission flightMission) throws DuplicateException {
         boolean isDuplicate = true;
         if (FLIGHT_MISSION_CASH.size() != 0) {
             isDuplicate =FLIGHT_MISSION_CASH.stream()
@@ -83,6 +88,9 @@ public class FindMissionService implements MissionService {
         if (isDuplicate) {
             FLIGHT_MISSION_CASH.add(flightMission);
         }
+//        else {
+//            throw new DuplicateException("Impossible to create duplicate mission!");
+//        }
         return flightMission;
     }
 }

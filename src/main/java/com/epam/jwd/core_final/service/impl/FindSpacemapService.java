@@ -2,12 +2,12 @@ package com.epam.jwd.core_final.service.impl;
 
 import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.domain.Planet;
+import com.epam.jwd.core_final.exception.DuplicateException;
 import com.epam.jwd.core_final.service.SpacemapService;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class FindSpacemapService  implements SpacemapService {
     private static FindSpacemapService instance;
@@ -38,7 +38,7 @@ public class FindSpacemapService  implements SpacemapService {
     }
 
     @Override
-    public Planet createPlanet(Planet planet) throws RuntimeException {
+    public Planet createPlanet(Planet planet) throws DuplicateException {
         boolean isDuplicate = PLANET_CASH.stream()
                 .noneMatch(planet1 -> planet1.getName().equals(planet.getName()));
 

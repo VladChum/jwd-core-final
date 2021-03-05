@@ -4,6 +4,8 @@ import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.CrewMemberCriteria;
 import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.domain.CrewMember;
+import com.epam.jwd.core_final.exception.AssignationException;
+import com.epam.jwd.core_final.exception.DuplicateException;
 import com.epam.jwd.core_final.service.CrewService;
 
 import java.util.ArrayList;
@@ -67,19 +69,23 @@ public class FindCrewMemberService implements CrewService {
 
     @Override
     public CrewMember updateCrewMemberDetails(CrewMember crewMember) {
-
-        return null;
+        if (crewMember.getReadyForNextMissions()) {
+            crewMember.setReadyForNextMissions(Boolean.FALSE);
+        }
+        return crewMember;
     }
 
     @Override
-    public void assignCrewMemberOnMission(CrewMember crewMember) throws RuntimeException {
+    public void assignCrewMemberOnMission(CrewMember crewMember) throws AssignationException {
         if (crewMember.getReadyForNextMissions().equals(true)) {
             crewMember.crewMemberIsNotReadeForNextMissions();
+        } else {
+            throw new AssignationException("Impossible to assign crew member on a mission");
         }
     }
 
     @Override
-    public CrewMember createCrewMember(CrewMember crewMember) throws RuntimeException {
+    public CrewMember createCrewMember(CrewMember crewMember) throws DuplicateException {
 //        boolean isDuplicate = CREW_MEMBER_CASH.stream()
 //                .noneMatch(member -> member.getName().equals(crewMember.getName()));
 //         add duplicate check
@@ -91,7 +97,7 @@ public class FindCrewMemberService implements CrewService {
         return crewMember;
     }
 
-    public boolean checkDuplicateCrewMember(String name) {
+    public boolean checkDuplicateCrewMember(String name) throws DuplicateException {
         return CREW_MEMBER_CASH.stream()
                 .noneMatch(member -> member.getName().equals(name));
     }

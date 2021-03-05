@@ -44,20 +44,8 @@ public final class ApplicationProperties {
         this.dateTimeFormat = dateTimeFormat;
     }
 
-    public String getInputRootDir() {
-        return inputRootDir;
-    }
-
-    public String getOutputRootDir() {
-        return outputRootDir;
-    }
-
     public String getCrewFileName() {
         return crewFileName;
-    }
-
-    public String getMissionsFileName() {
-        return missionsFileName;
     }
 
     public String getSpaceshipsFileName() {

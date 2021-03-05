@@ -4,6 +4,7 @@ import com.epam.jwd.core_final.context.impl.NassaContext;
 import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.criteria.SpaceshipCriteria;
 import com.epam.jwd.core_final.domain.Spaceship;
+import com.epam.jwd.core_final.exception.DuplicateException;
 import com.epam.jwd.core_final.service.SpaceshipService;
 
 import java.util.Collection;
@@ -66,7 +67,10 @@ public class FindSpaceshipService implements SpaceshipService {
 
     @Override
     public Spaceship updateSpaceshipDetails(Spaceship spaceship) {
-        return null;
+        if (spaceship.getReadyForNextMissions()) {
+            spaceship.setReadyForNextMissions(false);
+        }
+        return spaceship;
     }
 
     @Override
@@ -75,7 +79,7 @@ public class FindSpaceshipService implements SpaceshipService {
     }
 
     @Override
-    public Spaceship createSpaceship(Spaceship spaceship) throws RuntimeException {
+    public Spaceship createSpaceship(Spaceship spaceship) throws DuplicateException {
         boolean isDuplicate = checkDuplicateSpaceship(spaceship.getName());
 
         if (isDuplicate) {
@@ -84,7 +88,7 @@ public class FindSpaceshipService implements SpaceshipService {
         return spaceship;
     }
 
-    public boolean checkDuplicateSpaceship(String name) {
+    public boolean checkDuplicateSpaceship(String name) throws DuplicateException{
         return SPACESHIP_CASH.stream()
                 .noneMatch(member -> member.getName().equals(name));
     }

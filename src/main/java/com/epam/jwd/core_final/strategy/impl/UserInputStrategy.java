@@ -93,7 +93,12 @@ public class UserInputStrategy implements InputStrategy {
                 "3) PLANNED,\n" +
                 "4) IN_PROGRESS,\n" +
                 "5) COMPLETED");
-        switch (scanner.nextInt()) {
+        return choseMissionStatus(scanner.nextInt());
+    }
+
+    public MissionResult choseMissionStatus(int number) {
+        MissionResult missionResult;
+        switch (number) {
             case 1:
                 missionResult = MissionResult.CANCELLED;
                 break;
