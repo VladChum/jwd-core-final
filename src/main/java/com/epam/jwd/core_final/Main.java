@@ -20,7 +20,7 @@ public class Main {
         try {
             CrewMemberWriteStrategy.getInstance().openFile();
             SpaceshipWriteStrategy.getInstance().openFile();
-            timer.scheduleAtFixedRate(new UpdateCash(), 0, 10 * 1000);
+            timer.scheduleAtFixedRate(new UpdateCash(), 0, 30 * 1000);
             Application.start();
             NassaMenu.getInstance().getApplicationContext();
             CrewMemberWriteStrategy.getInstance().closeFile();
